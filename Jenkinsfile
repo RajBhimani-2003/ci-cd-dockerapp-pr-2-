@@ -9,7 +9,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/RajBhimani-2003/ci-cd-dockerapp-pr-2-.git'
+                git branch: 'main', url: 'https://github.com/RajBhimani-2003/ci-cd-dockerapp-pr-2-.git'
             }
         }
 
