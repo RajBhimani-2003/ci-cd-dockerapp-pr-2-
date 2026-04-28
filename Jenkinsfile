@@ -2,21 +2,20 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "rajbhimani18/ci-cd-dockerapp-pr-2"
-        CONTAINER_NAME = "cicd-container"
+        IMAGE_NAME = "rajbhimani18/ci-cd-dockerapp-pr-2"
     }
 
     stages {
 
         stage('Clone Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/RajBhimani-2003/ci-cd-dockerapp-pr-2-.git'
+                git 'https://github.com/RajBhimani-2003/ci-cd-dockerapp-pr-2-.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE:latest .'
+                sh 'docker build -t $IMAGE_NAME:latest .'
             }
         }
 
@@ -34,16 +33,16 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                sh 'docker push $DOCKER_IMAGE:latest'
+                sh 'docker push $IMAGE_NAME:latest'
             }
         }
 
         stage('Deploy Container') {
             steps {
                 sh '''
-                docker stop $CONTAINER_NAME || true
-                docker rm $CONTAINER_NAME || true
-                docker run -d -p 3000:3000 --name $CONTAINER_NAME $DOCKER_IMAGE:latest
+                docker stop myapp || true
+                docker rm myapp || true
+                docker run -d -p 3000:3000 --name myapp $IMAGE_NAME:latest
                 '''
             }
         }
@@ -51,10 +50,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline executed successfully!'
+            echo "✅ Pipeline Success"
         }
         failure {
-            echo '❌ Pipeline failed. Check logs.'
+            echo "❌ Pipeline Failed"
         }
     }
 }
